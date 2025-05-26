@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Ahliddin Xasanov">
+    <title>O‘zbekcha AI Chatbot (Mistral)</title>
+    <link rel="stylesheet" href="stiyles.css">
+    <style>
+        .chatbox_slot, .container {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-square {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            animation: floatAnimation 6s infinite alternate ease-in-out;
+        }
+
+        .square1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .square2 { bottom: 10%; right: 10%; animation-delay: 1s; }
+        .square3 { top: 50%; left: 80%; animation-delay: 2s; }
+
+        @keyframes floatAnimation {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-20px) translateX(20px); }
+        }
+
+        .chat-message {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .chat-message.show-message {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .thinking {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .thinking span {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: thinkingAnimation 1s infinite alternate;
+        }
+
+        .thinking span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes thinkingAnimation {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <h1>O'zbekcha AI Chatbot (Mistral)</h1>
+    <section>    
+        <div class="floating-square square1"></div>
+        <div class="floating-square square2"></div>
+        <div class="floating-square square3"></div>    
+        <div class="container" id="container">
+            <div class="chatbox_slot" id="chatbox_slot">
+                <div id="chatbox"></div>
+            </div>
+            <div class="send">
+                <input type="text" id="chatInput" placeholder="Xabar yozing...">
+                <button id="check" onclick="sendMessage()">➤</button>
+            </div>          
+        </div>
+    </section>
+
+    <script>
+        window.onload = function() {
+            document.getElementById("chatbox_slot").classList.add("show");
+            document.getElementById("container").classList.add("show");
+        };
+
+        async function sendMessage() {
+            let userInput = document.getElementById("chatInput").value;
+            let chatbox = document.getElementById("chatbox");
+
+            if (userInput.trim() === "") return;
+
+            let userMessage = document.createElement("p");
+            userMessage.classList.add("chat-message");
+            userMessage.innerHTML = `<strong class="men">Siz:</strong> ${userInput}`;
+            chatbox.appendChild(userMessage);
+            setTimeout(() => userMessage.classList.add("show-message"), 100);
+
+            let thinkingIndicator = document.createElement("div");
+            thinkingIndicator.classList.add("thinking");
+            thinkingIndicator.innerHTML = `<span></span><span></span>`;
+            chatbox.appendChild(thinkingIndicator);
+
+            let response = await fetch("http://127.0.0.1:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            });
+
+            let data = await response.json();
+            chatbox.removeChild(thinkingIndicator);
+            
+            let aiMessage = document.createElement("p");
+            aiMessage.classList.add("chat-message");
+            aiMessage.innerHTML = data.response ? `<strong class="ai">AI:</strong> ${data.response}` : `<strong class="xatolik">Xatolik:</strong> ${data.error}`;
+            chatbox.appendChild(aiMessage);
+            setTimeout(() => aiMessage.classList.add("show-message"), 100);
+        }
+        
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") { 
+                document.getElementById("check").click();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(45deg, #08001f,#30197d);
+    background-size: cover;
+    background-position: center;
+    animation: animateBg 7.5s linear infinite;
+}
+body { 
+    font-family: Arial, sans-serif; 
+    text-align: center; 
+    background: linear-gradient(45deg, #08001f,#30197d); 
+    z-index: 1;
+    font-size: 25px;
+}
+.container { 
+    width: 60%; 
+    height: 70%;
+    margin: auto;
+    padding: 20px;
+    position: absolute; 
+    border-radius: 10px;
+    z-index: 0;
+}
+input, button { 
+    width: 80%; 
+    padding: 10px; 
+    margin: 10px; 
+    border-radius: 5px; 
+}
+button { 
+    background-color: #28a745; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+    font-weight: 900;
+}
+button:hover { 
+    background-color: #218838; 
+}
+.chatbox_slot{
+    height: 90%;
+    width: 100%;
+    z-index: 1;
+}
+#chatbox { 
+    height: 90%;
+    width: 100%; 
+    overflow-y: scroll;   
+    background: rgba(0, 0, 0, 0); 
+    text-align: left; 
+    z-index: 1;
+    
+}
+.send {
+    width: 100%;
+    height: 100%;
+    background: rgba(235, 0, 255,0.11);
+    border-radius: 10px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    backdrop-filter: blur(40px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: -1;
+}
+.container::before{
+    content: '';
+    width: 180px;
+    height: 180px;
+    background: #f41b75;
+    border-radius: 5px;
+    position: absolute;
+    left: -50px;
+    top: -50px;
+    z-index: -2;
+}
+
+.container::after{
+    content: '';
+    width: 180px;
+    height: 180px;
+    background: #419aff;
+    border-radius: 5px;
+    position: absolute;
+    right: -70px;
+    bottom: -70px;
+    z-index: -2;
+}
+h1 {
+    color: aqua;
+    font-size: 40px;
+}
+
+.men{
+    color: #c00050;
+}
+.ai{
+    color: #419aff;
+}
+.xatolik{
+    color: red;
+    font-weight: 900;
+    font-size: 80px;
+}
+
+p{
+    font-weight: 600;
+    color: white;
+}
